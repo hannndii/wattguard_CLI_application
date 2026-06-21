@@ -1,0 +1,38 @@
+name: Continuous Delivery (Release Artifact)
+
+# CD jalan otomatis setiap ada code baru masuk ke branch main
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-release:
+    name: Build & Upload Release Artifact
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Build JAR Package with Maven
+        run: mvn clean package -DskipTests
+
+      # Upload ke GitHub Release dengan tag "latest"
+      - name: Create GitHub Release and Upload Asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: target/wattguard-*.jar
+          tag_name: latest
+          name: Latest Build Release
+          draft: false
+          prerelease: false
+        env:
+          # Gunakan format ${{ ... }} seperti di bawah ini 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
