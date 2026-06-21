@@ -13,7 +13,7 @@ jobs:
     permissions:
       contents: write
 
-    steps:
+   steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
@@ -27,15 +27,20 @@ jobs:
       - name: Build JAR Package with Maven
         run: mvn clean package -DskipTests
 
-      # Upload ke GitHub Release dengan tag "latest"
+      # 1. Step tambahan buat bikin tag versi unik dari waktu push
+      - name: Get Version and Date
+        id: vars
+        run: |
+          echo "version=v$(date +'%Y.%m.%d.%H%M%S')" >> $GITHUB_OUTPUT
+
+      # 2. Step upload release yang udah dimodifikasi pake tag dinamis
       - name: Create GitHub Release and Upload Asset
         uses: softprops/action-gh-release@v2
         with:
           files: target/wattguard-*.jar
-          tag_name: latest
-          name: Latest Build Release
+          tag_name: ${{ steps.vars.outputs.version }}
+          name: Release ${{ steps.vars.outputs.version }}
           draft: false
           prerelease: false
         env:
-          # Gunakan format ${{ ... }} seperti di bawah ini 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
