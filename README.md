@@ -1,1 +1,1 @@
-﻿# WattGuard_App_CLI
+﻿# WattGuard_App
