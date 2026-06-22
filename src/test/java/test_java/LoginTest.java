@@ -11,7 +11,7 @@ public class LoginTest {
         String username = "admin";
         String password = "123";
 
-        assertEquals("admin", username);
+        assertEquals("salah", username);
         assertEquals("123", password);
 
     }

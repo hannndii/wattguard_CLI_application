@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Login extends user {
 
     public Login(String user_name, String id_user, String pass, String email, String alamat_user) {
-        super(user_name, id_user, pass, email, alamat_user);
+        super(user_name, id_user, pass, email, alamat_user)
     }
 
     public static boolean validasiLogin(HashMap<String, String> userMap, String inputUsername, String inputPassword) {
